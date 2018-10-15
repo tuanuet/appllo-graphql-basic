@@ -1,15 +1,12 @@
 import express from 'express';
-import { ApolloServer, SchemaDirectiveVisitor } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './Schema';
-import { UpperCaseDirective } from './Directive'
 import context from './Context';
+import schemaDirectives from './Directive';
 
-const schemaDirectives = {
-  upper: UpperCaseDirective,
-}
 
 // @ts-ignore: 'resolvers' should accept 'Array<IResolvers>'
-const server = new ApolloServer({ typeDefs, resolvers, context, schemaDirectives });
+const server = new ApolloServer({ typeDefs, resolvers, context, schemaDirectives, tracing: true});
 
 const app = express();
 server.applyMiddleware({ app });

@@ -30,11 +30,10 @@ export const typeDefs =
         id: Int!
         firstName: String @upper
         lastName: String
-        fbId: Int
         """
         the list of Posts by this author
         """
-        posts: [Post]
+        posts: [Post]!
     }`;
 
 export const resolvers = {
@@ -43,7 +42,10 @@ export const resolvers = {
         authors: () => authors
     },
     Mutation: {
-        createAuthor: (_: any, { author }: { author: AuthorInput }) => ({ ...author, ...{ fbId: 1 } })
+        createAuthor: (_: any, { author }: { author: AuthorInput }) => {
+            authors.push(author);
+            return author;
+        }
     },
     Author: {
         posts: (author: any) => {
